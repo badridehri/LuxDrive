@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LuxDrive - Admin Panel</title>
+    <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        .dashboard-header {
+            background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url('https://images.unsplash.com/photo-1485291571150-772bcfc10da5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2128&q=80');
+            background-size: cover;
+            background-position: center;
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <!-- Admin Navigation -->
+    <nav class="bg-gray-900 text-white shadow-lg fixed w-full z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <a href="#" class="flex-shrink-0 flex items-center">
+                        <i data-feather="car" class="h-8 w-8 text-indigo-400"></i>
+                        <span class="ml-2 text-xl font-bold">LuxDrive Admin</span>
+                    </a>
+                </div>
+                <div class="hidden md:flex items-center space-x-4">
+                    <a href="index.html" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-all">
+                        <i data-feather="home" class="h-4 w-4 mr-1"></i> Back to Site
+                    </a>
+                    <button id="logout-btn" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-all">
+                        <i data-feather="log-out" class="h-4 w-4 mr-1"></i> Logout
+                    </button>
+                </div>
+                <div class="md:hidden flex items-center">
+                    <button id="admin-mobile-menu-button" class="text-gray-300 hover:text-white focus:outline-none">
+                        <i data-feather="menu" class="h-6 w-6"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile menu -->
+        <div id="admin-mobile-menu" class="hidden md:hidden bg-gray-800 shadow-lg">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="index.html" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700">
+                    <i data-feather="home" class="h-4 w-4 mr-2 inline"></i> Back to Site
+                </a>
+                <button id="logout-btn-mobile" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700">
+                    <i data-feather="log-out" class="h-4 w-4 mr-2 inline"></i> Logout
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Admin Header -->
+    <header class="dashboard-header text-white pt-24 pb-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center">
+                <div>
+                    <h1 class="text-3xl md:text-4xl font-bold mb-2">Booking Management</h1>
+                    <p class="text-gray-300">View and manage all customer reservations</p>
+                </div>
+                <div class="flex space-x-4">
+                    <button id="refresh-btn" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md flex items-center transition-all">
+                        <i data-feather="refresh-cw" class="h-4 w-4 mr-2"></i> Refresh
+                    </button>
+                    <button id="export-btn" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md flex items-center transition-all">
+                        <i data-feather="download" class="h-4 w-4 mr-2"></i> Export CSV
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="bg-white shadow rounded-lg overflow-hidden mb-8">
+            <div class="px-6 py-4 border-b border-gray-200">
+                <h2 class="text-lg font-semibold text-gray-900">All Bookings</h2>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Customer</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Car</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Dates</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="bookings-table-body" class="bg-white divide-y divide-gray-200">
+                        <!-- Bookings will be loaded here via JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <!-- Stats Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="bg-white shadow rounded-lg p-6">
+                <div class="flex items-center">
+                    <div class="p-3 rounded-full bg-indigo-100 text-indigo-600 mr-4">
+                        <i data-feather="calendar" class="h-6 w-6"></i>
+                    </div>
+                    <div>
+                        <p class="text-sm font-medium text-gray-500">Active Bookings</p>
+                        <p id="active-bookings" class="text-2xl font-semibold text-gray-900">0</p>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white shadow rounded-lg p-6">
+                <div class="flex items-center">
+                    <div class="p-3 rounded-full bg-green-100 text-green-600 mr-4">
+                        <i data-feather="dollar-sign" class="h-6 w-6"></i>
+                    </div>
+                    <div>
+                        <p class="text-sm font-medium text-gray-500">Total Revenue</p>
+                        <p id="total-revenue" class="text-2xl font-semibold text-gray-900">$0</p>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white shadow rounded-lg p-6">
+                <div class="flex items-center">
+                    <div class="p-3 rounded-full bg-blue-100 text-blue-600 mr-4">
+                        <i data-feather="users" class="h-6 w-6"></i>
+                    </div>
+                    <div>
+                        <p class="text-sm font-medium text-gray-500">Total Customers</p>
+                        <p id="total-customers" class="text-2xl font-semibold text-gray-900">0</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <p>&copy; 2023 LuxDrive Admin Panel. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Booking Details Modal -->
+    <div id="booking-details-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-screen overflow-y-auto">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-2xl font-bold text-gray-900">Booking Details</h3>
+                    <button id="close-details-modal" class="text-gray-500 hover:text-gray-700 focus:outline-none">
+                        <i data-feather="x" class="h-6 w-6"></i>
+                    </button>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div>
+                        <h4 class="text-lg font-semibold mb-2">Customer Information</h4>
+                        <div class="space-y-2">
+                            <p><span class="font-medium">Name:</span> <span id="detail-name" class="text-gray-600"></span></p>
+                            <p><span class="font-medium">Phone:</span> <span id="detail-phone" class="text-gray-600"></span></p>
+                            <p><span class="font-medium">Booking Date:</span> <span id="detail-booking-date" class="text-gray-600"></span></p>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="text-lg font-semibold mb-2">Rental Information</h4>
+                        <div class="space-y-2">
+                            <p><span class="font-medium">Car:</span> <span id="detail-car" class="text-gray-600"></span></p>
+                            <p><span class="font-medium">Rental Period:</span> <span id="detail-dates" class="text-gray-600"></span></p>
+                            <p><span class="font-medium">Total Cost:</span> <span id="detail-cost" class="text-gray-600"></span></p>
+                            <p><span class="font-medium">Status:</span> <span id="detail-status" class="text-gray-600"></span></p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mb-6">
+                    <h4 class="text-lg font-semibold mb-2">Special Requests</h4>
+                    <p id="detail-requests" class="text-gray-600 bg-gray-50 p-4 rounded-md"></p>
+                </div>
+                
+                <div class="pt-4 border-t border-gray-200">
+                    <div class="flex justify-between">
+                        <button id="cancel-booking" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-md transition-all">
+                            Cancel Booking <i data-feather="x" class="ml-2 inline"></i>
+                        </button>
+                        <button id="confirm-booking" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-md transition-all">
+                            Confirm Booking <i data-feather="check" class="ml-2 inline"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Feather Icons
+        feather.replace();
+        
+        // Sample Car Data (same as in index.html)
+        const cars = [
+            {
+                id: 1,
+                brand: 'bmw',
+                model: 'BMW M5 Competition',
+                type: 'sedan',
+                price: 350,
+                year: 2022,
+                seats: 4,
+                transmission: 'Automatic',
+                image: 'https://images.unsplash.com/photo-1555215695-3004980ad54e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
+                description: 'The BMW M5 Competition combines luxury sedan comfort with supercar performance. Its 4.4L V8 engine delivers 617 horsepower for an exhilarating driving experience.'
+            },
+            {
+                id: 2,
+                brand: 'audi',
+                model: 'Audi RS7 Sportback',
+                type: 'sedan',
+                price: 380,
+                year: 2021,
+                seats: 5,
+                transmission: 'Automatic',
+                image: 'https://images.unsplash.com/photo-1551836026-43d2b4df0b78?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
+                description: 'The Audi RS7 Sportback offers a perfect blend of performance and practicality. With its sleek coupe-like silhouette and powerful V8 engine, it turns heads wherever it goes.'
+            },
+            {
+                id: 3,
+                brand: 'mercedes',
+                model: 'Mercedes-AMG GT 63 S',
+                type: 'coupe',
+                price: 420,
+                year: 2023,
+                seats: 4,
+                transmission: 'Automatic',
+                image: 'https://images.unsplash.com/photo-1619682817481-e994891cd1f5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
+                description: 'The Mercedes-AMG GT 63 S is a four-door coupe that delivers supercar performance with everyday usability. Its handcrafted AMG V8 produces 630 horsepower.'
+            },
+            {
+                id: 4,
+                brand: 'porsche',
+                model: 'Porsche 911 Carrera S',
+                type: 'coupe',
+                price: 450,
+                year: 2022,
+                seats: 4,
+                transmission: 'Automatic',
+                image: 'https://images.unsplash.com/photo-1580273916550-e323be2ae537?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1964&q=80',
+                description: 'The Porsche 911 Carrera S is the quintessential sports car, offering perfect balance, exhilarating performance, and everyday usability.'
+            },
+            {
+                id: 5,
+                brand: 'mercedes',
+                model: 'Mercedes G 63 AMG',
+                type: 'suv',
+                price: 500,
+                year: 2023,
+                seats: 5,
+                transmission: 'Automatic',
+                image: 'https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
+                description: 'The Mercedes-AMG G 63 combines the legendary off-road capability of the G-Class with AMG performance. Its handcrafted 4.0L V8 produces 577 horsepower.'
+            },
+            {
+                id: 6,
+                brand: 'audi',
+                model: 'Audi R8 Spyder',
+                type: 'convertible',
+                price: 550,
+                year: 2021,
+                seats: 2,
+                transmission: 'Automatic',
+                image: 'https://images.unsplash.com/photo-1555626906-fcf10d6851b4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
+                description: 'The Audi R8 Spyder offers open-top motoring with supercar performance. Its naturally aspirated V10 engine produces 562 horsepower and delivers an unforgettable soundtrack.'
+            }
+        ];
+        
+        // Load Bookings
+        function loadBookings() {
+            const bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
+            const tableBody = document.getElementById('bookings-table-body');
+            tableBody.innerHTML = '';
+            
+            let activeCount = 0;
+            let totalRevenue = 0;
+            const uniqueCustomers = new Set();
+            
+            bookings.forEach((booking, index) => {
+                const car = cars.find(c => c.id === parseInt(booking.carId));
+                if (!car) return;
+                
+                const startDate = new Date(booking.startDate);
+                const endDate = new Date(booking.endDate);
+                const today = new Date();
+                
+                // Check if booking is active (today is between start and end dates)
+                const isActive = today >= startDate && today <= endDate;
+                if (isActive) activeCount++;
+                
+                // Calculate total cost
+                const days = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24)) + 1;
+                const totalCost = days * car.price;
+                totalRevenue += totalCost;
+                
+                // Add customer to unique set
+                uniqueCustomers.add(booking.name);
+                
+                const row = document.createElement('tr');
+                row.className = 'hover:bg-gray-50';
+                row.innerHTML = `
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="flex items-center">
+                            <div class="flex-shrink-0 h-10 w-10 rounded-full bg-gray-200 flex items-center justify-center">
+                                <i data-feather="user" class="h-5 w-5 text-gray-500"></i>
+                            </div>
+                            <div class="ml-4">
+                                <div class="text-sm font-medium text-gray-900">${booking.name}</div>
+                                <div class="text-sm text-gray-500">${booking.phone}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900 font-medium">${car.model}</div>
+                        <div class="text-sm text-gray-500">$${car.price}/day</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">${startDate.toLocaleDateString()} - ${endDate.toLocaleDateString()}</div>
+                        <div class="text-sm text-gray-500">${days} days</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${isActive ? 'bg-green-100 text-green-800' : today < startDate ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-800'}">
+                            ${isActive ? 'Active' : today < startDate ? 'Upcoming' : 'Completed'}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                        <button class="view-details-btn text-indigo-600 hover:text-indigo-900 mr-3" data-index="${index}">
+                            <i data-feather="eye" class="h-4 w-4 inline"></i> View
+                        </button>
+                        <button class="delete-booking-btn text-red-600 hover:text-red-900" data-index="${index}">
+                            <i data-feather="trash-2" class="h-4 w-4 inline"></i> Delete
+                        </button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+            
+            // Update stats
+            document.getElementById('active-bookings').textContent = activeCount;
+            document.getElementById('total-revenue').textContent = `$${totalRevenue}`;
+            document.getElementById('total-customers').textContent = uniqueCustomers.size;
+            
+            feather.replace();
+            
+            // Add event listeners to buttons
+            document.querySelectorAll('.view-details-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const index = parseInt(this.getAttribute('data-index'));
+                    showBookingDetails(index);
+                });
+            });
+            
+            document.querySelectorAll('.delete-booking-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const index = parseInt(this.getAttribute('data-index'));
+                    deleteBooking(index);
+                });
+            });
+        }
+        
+        // Show Booking Details
+        function showBookingDetails(index) {
+            const bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
+            const booking = bookings[index];
+            if (!booking) return;
+            
+            const car = cars.find(c => c.id === parseInt(booking.carId));
+            if (!car) return;
+            
+            const startDate = new Date(booking.startDate);
+            const endDate = new Date(booking.endDate);
+            const today = new Date();
+            const days = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24)) + 1;
+            const totalCost = days * car.price;
+            
+            // Check if booking is active (today is between start and end dates)
+            const isActive = today >= startDate && today <= endDate;
+            const status = isActive ? 'Active' : today < startDate ? 'Upcoming' : 'Completed';
+            
+            // Fill modal with data
+            document.getElementById('detail-name').textContent = booking.name;
+            document.getElementById('detail-phone').textContent = booking.phone;
+            document.getElementById('detail-booking-date').textContent = new Date(booking.timestamp).toLocaleString();
+            document.getElementById('detail-car').textContent = `${car.model} ($${car.price}/day)`;
+            document.getElementById('detail-dates').textContent = `${startDate.toLocaleDateString()} to ${endDate.toLocaleDateString()} (${days} days)`;
+            document.getElementById('detail-cost').textContent = `$${totalCost}`;
+            document.getElementById('detail-status').textContent = status;
+            document.getElementById('detail-requests').textContent = booking.specialRequests || 'No special requests';
+            
+            // Store the current booking index in the modal buttons
+            document.getElementById('cancel-booking').setAttribute('data-index', index);
+            document.getElementById('confirm-booking').setAttribute('data-index', index);
+            
+            // Show modal
+            document.getElementById('booking-details-modal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        // Delete Booking
+        function deleteBooking(index) {
+            if (confirm('Are you sure you want to delete this booking?')) {
+                const bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
+                bookings.splice(index, 1);
+                localStorage.setItem('bookings', JSON.stringify(bookings));
+                loadBookings();
+            }
+        }
+        
+        // Close Booking Details Modal
+        function closeBookingDetailsModal() {
+            document.getElementById('booking-details-modal').classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+        
+        // Export to CSV
+        function exportToCSV() {
+            const bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
+            
+            if (bookings.length === 0) {
+                alert('No bookings to export.');
+                return;
+            }
+            
+            let csv = 'Customer Name,Phone,Car Model,Start Date,End Date,Total Cost,Special Requests\n';
+            
+            bookings.forEach(booking => {
+                const car = cars.find(c => c.id === parseInt(booking.carId));
+                if (!car) return;
+                
+                const startDate = new Date(booking.startDate);
+                const endDate = new Date(booking.endDate);
+                const days = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24)) + 1;
+                const totalCost = days * car.price;
+                
+                csv += `"${booking.name}","${booking.phone}","${car.model}","${startDate.toLocaleDateString()}","${endDate.toLocaleDateString()}","$${totalCost}","${(booking.specialRequests || '').replace(/"/g, '""')}"\n`;
+            });
+            
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.setAttribute('href', url);
+            link.setAttribute('download', `luxdrive-bookings-${new Date().toISOString().split('T')[0]}.csv`);
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load bookings
+            loadBookings();
+            
+            // Mobile Menu Toggle
+            document.getElementById('admin-mobile-menu-button').addEventListener('click', function() {
+                const menu = document.getElementById('admin-mobile-menu');
+                menu.classList.toggle('hidden');
+            });
+            
+            // Refresh Button
+            document.getElementById('refresh-btn').addEventListener('click', loadBookings);
+            
+            // Export Button
+            document.getElementById('export-btn').addEventListener('click', exportToCSV);
+            
+            // Modal Close Button
+            document.getElementById('close-details-modal').addEventListener('click', closeBookingDetailsModal);
+            
+            // Close modal when clicking outside
+            window.addEventListener('click', function(event) {
+                if (event.target === document.getElementById('booking-details-modal')) {
+                    closeBookingDetailsModal();
+                }
+            });
+            
+            // Logout Buttons (just redirect to index in this demo)
+            document.getElementById('logout-btn').addEventListener('click', function() {
+                window.location.href = 'index.html';
+            });
+            
+            document.getElementById('logout-btn-mobile').addEventListener('click', function() {
+                window.location.href = 'index.html';
+            });
+            
+            // Booking Actions (just demo functionality)
+            document.getElementById('cancel-booking').addEventListener('click', function() {
+                const index = parseInt(this.getAttribute('data-index'));
+                alert(`Booking #${index + 1} has been canceled.`);
+                closeBookingDetailsModal();
+            });
+            
+            document.getElementById('confirm-booking').addEventListener('click', function() {
+                const index = parseInt(this.getAttribute('data-index'));
+                alert(`Booking #${index + 1} has been confirmed.`);
+                closeBookingDetailsModal();
+            });
+        });
+    </script>
+</body>
+</html>

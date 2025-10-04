@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LuxDrive - Location de Voitures de Luxe</title>
+    <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.waves.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            scroll-behavior: smooth;
+        }
+        
+        .hero-bg {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1587&q=80');
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .car-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        .transition-all {
+            transition: all 0.3s ease;
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg fixed w-full z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <a href="#" class="flex-shrink-0 flex items-center">
+                        <i data-feather="car" class="h-8 w-8 text-indigo-600"></i>
+                        <span class="ml-2 text-xl font-bold text-gray-900">LuxDrive</span>
+                    </a>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#" class="text-gray-900 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium transition-all">Accueil</a>
+                    <a href="#catalog" class="text-gray-500 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium transition-all">Notre Flotte</a>
+                    <a href="#how-it-works" class="text-gray-500 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium transition-all">Comment ça marche</a>
+                    <a href="#testimonials" class="text-gray-500 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium transition-all">Témoignages</a>
+                    <a href="admin.html" class="text-gray-500 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium transition-all">Administration</a>
+                </div>
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-button" class="text-gray-500 hover:text-gray-900 focus:outline-none">
+                        <i data-feather="menu" class="h-6 w-6"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white shadow-lg">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-gray-900 hover:text-indigo-600 hover:bg-gray-50">Accueil</a>
+                <a href="#catalog" class="block px-3 py-2 rounded-md text-base font-medium text-gray-500 hover:text-indigo-600 hover:bg-gray-50">Notre Flotte</a>
+                <a href="#how-it-works" class="block px-3 py-2 rounded-md text-base font-medium text-gray-500 hover:text-indigo-600 hover:bg-gray-50">Comment ça marche</a>
+                <a href="#testimonials" class="block px-3 py-2 rounded-md text-base font-medium text-gray-500 hover:text-indigo-600 hover:bg-gray-50">Témoignages</a>
+                <a href="admin.html" class="block px-3 py-2 rounded-md text-base font-medium text-gray-500 hover:text-indigo-600 hover:bg-gray-50">Administration</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero-bg text-white pt-24 pb-32 md:pt-32 md:pb-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <h1 class="text-4xl md:text-6xl font-bold mb-6">Conduisez le Luxe, Conduisez en Confiance</h1>
+                <p class="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">Découvrez notre sélection exclusive de véhicules premium à des tarifs compétitifs. La voiture de vos rêves n'est qu'à un clic.</p>
+                <a href="#catalog" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-8 rounded-full transition-all inline-flex items-center">
+                    Explorer la Flotte <i data-feather="arrow-down" class="ml-2"></i>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Search and Filter Section -->
+    <section class="py-12 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="bg-gray-50 p-6 rounded-xl shadow-sm">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Marque</label>
+                        <select id="brand-filter" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                            <option value="all">Toutes les marques</option>
+                            <option value="bmw">BMW</option>
+                            <option value="audi">Audi</option>
+                            <option value="mercedes">Mercedes</option>
+                            <option value="porsche">Porsche</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Type</label>
+                        <select id="type-filter" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                            <option value="all">Tous les types</option>
+                            <option value="sedan">Berline</option>
+                            <option value="suv">SUV</option>
+                            <option value="coupe">Coupé</option>
+                            <option value="convertible">Cabriolet</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Tranche de prix</label>
+                        <select id="price-filter" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                            <option value="all">Tous les prix</option>
+                            <option value="0-200">Moins de 200€</option>
+                            <option value="200-300">200€ - 300€</option>
+                            <option value="300-400">300€ - 400€</option>
+                            <option value="400+">400€ et plus</option>
+                        </select>
+                    </div>
+                    <div class="flex items-end">
+                        <button id="search-button" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-md transition-all">
+                            Rechercher <i data-feather="search" class="ml-2 inline"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Catalog Section -->
+    <section id="catalog" class="py-16 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">Notre Flotte Premium</h2>
+                <p class="text-lg text-gray-600 max-w-2xl mx-auto">Choisissez parmi notre collection exclusive de véhicules de luxe, chacun entretenu méticuleusement pour votre plaisir de conduite.</p>
+            </div>
+            
+            <div id="cars-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Cars will be loaded here via JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section id="how-it-works" class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">Comment fonctionne LuxDrive</h2>
+                <p class="text-lg text-gray-600 max-w-2xl mx-auto">Louer la voiture de vos rêves n'a jamais été aussi simple avec notre processus en trois étapes.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="text-center p-6 rounded-xl bg-gray-50 transition-all hover:shadow-lg">
+                    <div class="flex justify-center mb-4">
+                        <div class="bg-indigo-100 p-4 rounded-full">
+                            <i data-feather="search" class="h-8 w-8 text-indigo-600"></i>
+                        </div>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">1. Choisissez votre voiture</h3>
+                    <p class="text-gray-600">Parcourez notre sélection premium et trouvez le véhicule parfait pour vos besoins et votre style.</p>
+                </div>
+                <div class="text-center p-6 rounded-xl bg-gray-50 transition-all hover:shadow-lg">
+                    <div class="flex justify-center mb-4">
+                        <div class="bg-indigo-100 p-4 rounded-full">
+                            <i data-feather="calendar" class="h-8 w-8 text-indigo-600"></i>
+                        </div>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">2. Sélectionnez les dates</h3>
+                    <p class="text-gray-600">Choisissez vos dates de location et fournissez vos coordonnées pour une expérience de réservation sans faille.</p>
+                </div>
+                <div class="text-center p-6 rounded-xl bg-gray-50 transition-all hover:shadow-lg">
+                    <div class="flex justify-center mb-4">
+                        <div class="bg-indigo-100 p-4 rounded-full">
+                            <i data-feather="key" class="h-8 w-8 text-indigo-600"></i>
+                        </div>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">3. Récupérez & Profitez</h3>
+                    <p class="text-gray-600">Récupérez votre véhicule à notre emplacement et profitez d'une expérience de conduite inoubliable.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="testimonials" class="py-16 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">Ce que disent nos clients</h2>
+                <p class="text-lg text-gray-600 max-w-2xl mx-auto">Ne nous croyez pas sur parole - écoutez nos clients satisfaits.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-white p-6 rounded-xl shadow-sm transition-all hover:shadow-md">
+                    <div class="flex items-center mb-4">
+                        <div class="flex-shrink-0">
+                            <img class="h-10 w-10 rounded-full" src="https://randomuser.me/api/portraits/women/44.jpg" alt="Sarah J.">
+                        </div>
+                        <div class="ml-3">
+                            <h3 class="text-lg font-medium text-gray-900">Sarah J.</h3>
+                            <div class="flex text-yellow-400">
+                                <i data-feather="star" class="h-4 w-4 fill-current"></i>
+                                <i data-feather="star" class="h-4 w-4 fill-current"></i>
+                                <i data-feather="star" class="h-4 w-4 fill-current"></i>
+                                <i data-feather="star" class="h-4 w-4 fill-current"></i>
+                                <i data-feather="star" class="h-4 w-4 fill-current"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-gray-600">"La location de la BMW M5 chez LuxDrive a été une expérience incroyable. La voiture était impeccable et a fonctionné parfaitement. Le processus de réservation était si simple !"</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-sm transition-all hover:shadow-md">
+                    <div class="flex items-center mb-4">
+                        <div class="flex-shrink-0">
+                            <img class="h-10 w-10 rounded-full" src="https://randomuser.me/api/portraits/men/32.jpg" alt="Michael T.">
+                        </div>
+                        <div class="ml-3">
+                            <h3 class="text-lg font-medium text-gray-900">Michael T.</h3>
+                            <div class="flex text-yellow-400">
+                                <i data-feather="star" class="h-4 w-4 fill-current"></i>
+                                <i data-feather="star" class="h-4 w-4 fill-current"></i>
+                                <i data-feather="star" class="h-4 w-4 fill-current"></i>
+                                <i data-feather="star" class="h-4 w-4 fill-current"></i>
+                                <i data-feather="star" class="h-4 w-4 fill-current"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-gray-600">"Le Mercedes G-Class était parfait pour nos vacances en famille. Le service client de LuxDrive était exceptionnel et le processus de récupération super efficace."</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-sm transition-all hover:shadow-md">
+                    <div class="flex items-center mb-4">
+                        <div class="flex-shrink-0">
+                            <img class="h-10 w-10 rounded-full" src="https://randomuser.me/api/portraits/women/68.jpg" alt="Emily R.">
+                        </div>
+                        <div class="ml-3">
+                            <h3 class="text-lg font-medium text-gray-900">Emily R.</h3>
+                            <div class="flex text-yellow-400">
+                                <i data-feather="star" class="h-4 w-4 fill-current"></i>
+                                <i data-feather="star" class="h-4 w-4 fill-current"></i>
+                                <i data-feather="star" class="h-4 w-4 fill-current"></i>
+                                <i data-feather="star" class="h-4 w-4 fill-current"></i>
+                                <i data-feather="star" class="h-4 w-4"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-gray-600">"J'ai loué la Porsche 911 pour un week-end spécial et elle a dépassé toutes mes attentes. La voiture était en parfait état et a attiré tous les regards partout !"</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-16 bg-indigo-700 text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-3xl font-bold mb-6">Prêt à vivre le luxe ?</h2>
+            <p class="text-xl mb-8 max-w-2xl mx-auto">Rejoignez les milliers de clients satisfaits qui ont profité de nos véhicules premium.</p>
+            <a href="#catalog" class="bg-white text-indigo-600 hover:bg-gray-100 font-bold py-3 px-8 rounded-full transition-all inline-flex items-center">
+                Réserver maintenant <i data-feather="arrow-right" class="ml-2"></i>
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white pt-16 pb-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4 flex items-center">
+                        <i data-feather="car" class="h-6 w-6 mr-2"></i> LuxDrive
+                    </h3>
+                    <p class="text-gray-400">Location de voitures premium pour ceux qui exigent le meilleur en matière de performance, de confort et de style.</p>
+                    <div class="flex mt-4 space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white transition-all">
+                            <i data-feather="facebook" class="h-5 w-5"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-all">
+                            <i data-feather="twitter" class="h-5 w-5"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-all">
+                            <i data-feather="instagram" class="h-5 w-5"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-all">
+                            <i data-feather="linkedin" class="h-5 w-5"></i>
+                        </a>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Liens rapides</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-all">Accueil</a></li>
+                        <li><a href="#catalog" class="text-gray-400 hover:text-white transition-all">Notre Flotte</a></li>
+                        <li><a href="#how-it-works" class="text-gray-400 hover:text-white transition-all">Comment ça marche</a></li>
+                        <li><a href="#testimonials" class="text-gray-400 hover:text-white transition-all">Témoignages</a></li>
+                        <li><a href="admin.html" class="text-gray-400 hover:text-white transition-all">Administration</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Nous contacter</h3>
+                    <ul class="space-y-2">
+                        <li class="flex items-center text-gray-400">
+                            <i data-feather="map-pin" class="h-4 w-4 mr-2"></i> 123 Avenue du Luxe, Paris
+                        </li>
+                        <li class="flex items-center text-gray-400">
+                            <i data-feather="phone" class="h-4 w-4 mr-2"></i> (555) 123-4567
+                        </li>
+                        <li class="flex items-center text-gray-400">
+                            <i data-feather="mail" class="h-4 w-4 mr-2"></i> info@luxdrive.com
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Newsletter</h3>
+                    <p class="text-gray-400 mb-4">Abonnez-vous pour recevoir des mises à jour sur les nouvelles arrivées et les offres spéciales.</p>
+                    <div class="flex">
+                        <input type="email" placeholder="Votre email" class="px-4 py-2 w-full rounded-l-md focus:outline-none text-gray-900">
+                        <button class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-r-md transition-all">
+                            <i data-feather="send" class="h-4 w-4"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-12 pt-8 text-center text-gray-400">
+                <p>&copy; 2023 LuxDrive. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Booking Modal -->
+    <div id="booking-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-screen overflow-y-auto">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-2xl font-bold text-gray-900">Réservez votre voiture de luxe</h3>
+                    <button id="close-modal" class="text-gray-500 hover:text-gray-700 focus:outline-none">
+                        <i data-feather="x" class="h-6 w-6"></i>
+                    </button>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div>
+                        <img id="modal-car-image" src="" alt="Car" class="w-full h-48 object-cover rounded-lg">
+                    </div>
+                    <div>
+                        <h4 id="modal-car-name" class="text-xl font-semibold mb-2"></h4>
+                        <p id="modal-car-description" class="text-gray-600 mb-4"></p>
+                        <div class="flex justify-between">
+                            <div>
+                                <p class="text-sm text-gray-500">Prix par jour</p>
+                                <p id="modal-car-price" class="text-lg font-bold"></p>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-500">Disponibilité</p>
+                                <p class="text-green-600 font-medium">Disponible</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <form id="booking-form" class="space-y-4">
+                    <input type="hidden" id="car-id">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Nom complet</label>
+                            <input type="text" id="name" name="name" required class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                        </div>
+                        <div>
+                            <label for="phone" class="block text-sm font-medium text-gray-700 mb-1">Numéro de téléphone</label>
+                            <input type="tel" id="phone" name="phone" required class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="start-date" class="block text-sm font-medium text-gray-700 mb-1">Date de début</label>
+                            <input type="date" id="start-date" name="start-date" required class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                        </div>
+                        <div>
+                            <label for="end-date" class="block text-sm font-medium text-gray-700 mb-1">Date de fin</label>
+                            <input type="date" id="end-date" name="end-date" required class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                        </div>
+                    </div>
+                    <div>
+                        <label for="special-requests" class="block text-sm font-medium text-gray-700 mb-1">Demandes spéciales</label>
+                        <textarea id="special-requests" name="special-requests" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"></textarea>
+                    </div>
+                    <div class="pt-4">
+                        <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-4 rounded-md transition-all">
+                            Confirmer la réservation <i data-feather="check" class="ml-2 inline"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div id="success-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-lg shadow-xl max-w-md w-full p-6 text-center">
+            <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100 mb-4">
+                <i data-feather="check" class="h-6 w-6 text-green-600"></i>
+            </div>
+            <h3 class="text-lg font-medium text-gray-900 mb-2">Réservation confirmée !</h3>
+            <p id="success-message" class="text-gray-600 mb-4">Votre réservation a été soumise avec succès. Nous vous contacterons sous peu avec les détails de confirmation.</p>
+            <button id="close-success-modal" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-md transition-all">
+                Continuer la navigation
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Feather Icons
+        feather.replace();
+        
+        // Mobile Menu Toggle
+        document.getElementById('mobile-menu-button').addEventListener('click', function() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        });
+        
+        // Sample Car Data
+        const cars = [
+            {
+                id: 1,
+                brand: 'bmw',
+                model: 'BMW M5 Competition',
+                type: 'sedan',
+                price: 350,
+                year: 2022,
+                seats: 4,
+                transmission: 'Automatique',
+                image: 'https://images.unsplash.com/photo-1555215695-3004980ad54e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
+                description: 'La BMW M5 Competition allie le confort d\'une berline de luxe aux performances d\'une supercar. Son moteur V8 de 4,4L développe 617 chevaux pour une expérience de conduite exaltante.'
+            },
+            {
+                id: 2,
+                brand: 'audi',
+                model: 'Audi RS7 Sportback',
+                type: 'sedan',
+                price: 380,
+                year: 2021,
+                seats: 5,
+                transmission: 'Automatique',
+                image: 'https://images.unsplash.com/photo-1551836026-43d2b4df0b78?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
+                description: 'L\'Audi RS7 Sportback offre un mélange parfait de performance et de praticité. Avec sa silhouette coupé élégante et son puissant moteur V8, il attire tous les regards.'
+            },
+            {
+                id: 3,
+                brand: 'mercedes',
+                model: 'Mercedes-AMG GT 63 S',
+                type: 'coupe',
+                price: 420,
+                year: 2023,
+                seats: 4,
+                transmission: 'Automatique',
+                image: 'https://images.unsplash.com/photo-1619682817481-e994891cd1f5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
+                description: 'La Mercedes-AMG GT 63 S est un coupé quatre portes qui offre des performances de supercar avec une utilisabilité quotidienne. Son V8 AMG artisanal produit 630 chevaux.'
+            },
+            {
+                id: 4,
+                brand: 'porsche',
+                model: 'Porsche 911 Carrera S',
+                type: 'coupe',
+                price: 450,
+                year: 2022,
+                seats: 4,
+                transmission: 'Automatique',
+                image: 'https://images.unsplash.com/photo-1580273916550-e323be2ae537?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1964&q=80',
+                description: 'La Porsche 911 Carrera S est la sportive quintessentielle, offrant un équilibre parfait, des performances exaltantes et une utilisabilité quotidienne.'
+            },
+            {
+                id: 5,
+                brand: 'mercedes',
+                model: 'Mercedes G 63 AMG',
+                type: 'suv',
+                price: 500,
+                year: 2023,
+                seats: 5,
+                transmission: 'Automatique',
+                image: 'https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
+                description: 'La Mercedes-AMG G 63 combine la capacité tout-terrain légendaire du G-Class avec les performances AMG. Son V8 de 4,0L artisanal produit 577 chevaux.'
+            },
+            {
+                id: 6,
+                brand: 'audi',
+                model: 'Audi R8 Spyder',
+                type: 'convertible',
+                price: 550,
+                year: 2021,
+                seats: 2,
+                transmission: 'Automatique',
+                image: 'https://images.unsplash.com/photo-1555626906-fcf10d6851b4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
+                description: 'L\'Audi R8 Spyder offre la conduite à ciel ouvert avec des performances de supercar. Son moteur V10 atmosphérique produit 562 chevaux et délivre une bande-son inoubliable.'
+            }
+        ];
+        
+        // Display Cars
+        function displayCars(carsToDisplay) {
+            const container = document.getElementById('cars-container');
+            container.innerHTML = '';
+            
+            carsToDisplay.forEach(car => {
+                const carCard = document.createElement('div');
+                carCard.className = 'bg-white rounded-xl shadow-md overflow-hidden car-card transition-all hover:shadow-lg';
+                carCard.innerHTML = `
+                    <img src="${car.image}" alt="${car.model}" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-xl font-bold text-gray-900">${car.model}</h3>
+                            <span class="bg-indigo-100 text-indigo-800 text-xs font-semibold px-2.5 py-0.5 rounded">${car.price}€/jour</span>
+                        </div>
+                        <div class="flex items-center text-sm text-gray-500 mb-4">
+                            <span class="flex items-center mr-3">
+                                <i data-feather="calendar" class="h-4 w-4 mr-1"></i> ${car.year}
+                            </span>
+                            <span class="flex items-center mr-3">
+                                <i data-feather="users" class="h-4 w-4 mr-1"></i> ${car.seats} places
+                            </span>
+                            <span class="flex items-center">
+                                <i data-feather="activity" class="h-4 w-4 mr-1"></i> ${car.transmission}
+                            </span>
+                        </div>
+                        <p class="text-gray-600 mb-4">${car.description.substring(0, 100)}...</p>
+                        <button class="book-btn w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-md transition-all" data-id="${car.id}">
+                            Réserver maintenant <i data-feather="arrow-right" class="ml-2 inline h-4 w-4"></i>
+                        </button>
+                    </div>
+                `;
+                container.appendChild(carCard);
+            });
+            
+            feather.replace();
+            
+            // Add event listeners to book buttons
+            document.querySelectorAll('.book-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const carId = parseInt(this.getAttribute('data-id'));
+                    openBookingModal(carId);
+                });
+            });
+        }
+        
+        // Filter Cars
+        function filterCars() {
+            const brandFilter = document.getElementById('brand-filter').value;
+            const typeFilter = document.getElementById('type-filter').value;
+            const priceFilter = document.getElementById('price-filter').value;
+            
+            let filteredCars = [...cars];
+            
+            if (brandFilter !== 'all') {
+                filteredCars = filteredCars.filter(car => car.brand === brandFilter);
+            }
+            
+            if (typeFilter !== 'all') {
+                filteredCars = filteredCars.filter(car => car.type === typeFilter);
+            }
+            
+            if (priceFilter !== 'all') {
+                if (priceFilter === '0-200') {
+                    filteredCars = filteredCars.filter(car => car.price < 200);
+                } else if (priceFilter === '200-300') {
+                    filteredCars = filteredCars.filter(car => car.price >= 200 && car.price < 300);
+                } else if (priceFilter === '300-400') {
+                    filteredCars = filteredCars.filter(car => car.price >= 300 && car.price < 400);
+                } else if (priceFilter === '400+') {
+                    filteredCars = filteredCars.filter(car => car.price >= 400);
+                }
+            }
+            
+            displayCars(filteredCars);
+        }
+        
+        // Open Booking Modal
+        function openBookingModal(carId) {
+            const car = cars.find(c => c.id === carId);
+            if (!car) return;
+            
+            document.getElementById('modal-car-image').src = car.image;
+            document.getElementById('modal-car-name').textContent = car.model;
+            document.getElementById('modal-car-description').textContent = car.description;
+            document.getElementById('modal-car-price').textContent = `${car.price}€/jour`;
+            document.getElementById('car-id').value = car.id;
+            
+            // Set minimum date to today
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('start-date').min = today;
+            document.getElementById('end-date').min = today;
+            
+            document.getElementById('booking-modal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        // Close Booking Modal
+        function closeBookingModal() {
+            document.getElementById('booking-modal').classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+        
+        // Close Success Modal
+        function closeSuccessModal() {
+            document.getElementById('success-modal').classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+        
+        // Handle Booking Form Submission
+        document.getElementById('booking-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const booking = {
+                carId: document.getElementById('car-id').value,
+                name: document.getElementById('name').value,
+                phone: document.getElementById('phone').value,
+                startDate: document.getElementById('start-date').value,
+                endDate: document.getElementById('end-date').value,
+                specialRequests: document.getElementById('special-requests').value,
+                timestamp: new Date().toISOString()
+            };
+            
+            // Save booking to localStorage
+            let bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
+            bookings.push(booking);
+            localStorage.setItem('bookings', JSON.stringify(bookings));
+            
+            // Show success message
+            const car = cars.find(c => c.id === parseInt(booking.carId));
+            document.getElementById('success-message').textContent = 
+                `Votre réservation pour la ${car.model} du ${booking.startDate} au ${booking.endDate} a été confirmée. Nous vous contacterons sous peu.`;
+            
+            closeBookingModal();
+            document.getElementById('success-modal').classList.remove('hidden');
+            
+            // Reset form
+            this.reset();
+        });
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            displayCars(cars);
+            
+            // Event listeners for filters
+            document.getElementById('brand-filter').addEventListener('change', filterCars);
+            document.getElementById('type-filter').addEventListener('change', filterCars);
+            document.getElementById('price-filter').addEventListener('change', filterCars);
+            document.getElementById('search-button').addEventListener('click', filterCars);
+            
+            // Modal event listeners
+            document.getElementById('close-modal').addEventListener('click', closeBookingModal);
+            document.getElementById('close-success-modal').addEventListener('click', closeSuccessModal);
+            
+            // Close modals when clicking outside
+            window.addEventListener('click', function(event) {
+                if (event.target === document.getElementById('booking-modal')) {
+                    closeBookingModal();
+                }
+                if (event.target === document.getElementById('success-modal')) {
+                    closeSuccessModal();
+                }
+            });
+            
+            // Update end date min when start date changes
+            document.getElementById('start-date').addEventListener('change', function() {
+                document.getElementById('end-date').min = this.value;
+            });
+        });
+    </script>
+</body>
+</html>
